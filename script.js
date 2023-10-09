@@ -1,29 +1,46 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const circles = document.querySelectorAll('.circle');
-    const prevButton = document.getElementById('prev');
-    const nextButton = document.getElementById('next');
-    let currentStep = 1;
+//your JS code here. If required.
+const circles = document.querySelectorAll(".circle");
+const nextBtn = document.querySelector("#next");
+const prevBtn = document.querySelector("#prev");
 
-    nextButton.addEventListener('click', function () {
-        if (currentStep < circles.length) {
-            circles[currentStep - 1].classList.remove('active');
-            circles[currentStep].classList.add('active');
-            currentStep++;
-            updateButtonState();
-        }
-    });
+let currentActive = 1;
 
-    prevButton.addEventListener('click', function () {
-        if (currentStep > 1) {
-            currentStep--;
-            circles[currentStep].classList.remove('active');
-            circles[currentStep - 1].classList.add('active');
-            updateButtonState();
-        }
-    });
+nextBtn.addEventListener("click", () => {
+  currentActive++;
 
-    function updateButtonState() {
-        prevButton.disabled = currentStep === 1;
-        nextButton.disabled = currentStep === circles.length;
-    }
+  if (currentActive > circles.length) {
+    currentActive = circles.length;
+  }
+
+  update();
 });
+
+prevBtn.addEventListener("click", () => {
+  currentActive--;
+
+  if (currentActive < 1) {
+    currentActive = 1;
+  }
+
+  update();
+});
+
+function update() {
+  circles.forEach((circle, idx) => {
+    if (idx < currentActive) {
+      circle.classList.add("active");
+		
+    } else {
+      circle.classList.remove("active");
+    }
+  });
+
+  if (currentActive === 1) {
+    prevBtn.disabled = true;
+  } else if (currentActive === circles.length) {
+    nextBtn.disabled = true;
+  } else {
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+  }
+}
